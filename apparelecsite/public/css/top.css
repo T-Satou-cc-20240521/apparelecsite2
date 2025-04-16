@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+}
+.top_area {
+    width: 100%;
+    height: 6rem;
+    max-height: 200px;
+    border-bottom: solid 1px lightgray;
+    background-color: rgb(0, 150, 150);
+
+}
+
+.header_list {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.start_section {
+    display: flex;
+    margin-left: 5px;
+    margin-top: 30px;
+    height: 100%;
+    width: 15%;
+    align-items: center;
+}
+
+.center_section {
+    display: flex;
+    margin-top: 30px;
+    height: 100%;
+    width: 50%;
+    align-items: center;
+}
+
+.end_section {
+    display: flex;
+    margin-top: 30px;
+    height: 100%;
+    width: 35%;
+    align-items: center;
+}
+
+.header_ul {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    list-style: none;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.header_link:first-child {
+    margin-left: 20px;
+}
+
+
+.link_text {
+    text-decoration: none;
+    color: black;
+    font-size: 0.8rem;
+}
+
+.link_text_logout {
+    text-decoration: none;
+    border: none;
+    color: black;
+    font-size: 0.8rem;
+}
+
+.banner-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.banner-slide {
+    min-width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+}
+
+.query_button {
+    position: absolute;
+    margin-left: 5px;
+    background-color: #ffbb66;
+    padding: 0;
+    left: 800px;
+    width: 35px;
+    height: 30px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.category_box {
+    position: absolute;
+    height: 30px;
+    width: 60px;
+    left: 335px;
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+.search_box {
+    position: absolute;
+    left: 400px;
+    height: 30px;
+    width: 400px;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+.query_button:hover {
+    background-color: #ff9f33; 
+}

@@ -1,0 +1,44 @@
+.container {
+    padding-top: 50px;
+    width: 50%;
+    margin: auto;
+    position: relative;
+}
+
+.title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.input_label {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.input_text {
+    width: 100%;
+    height: 7%;
+    border: solid 1px lightgray;
+}
+
+.submit_button {
+    margin-top: 30px;
+    width: 100%;
+    color: white;
+    background-color: red;
+    border: none;
+    height: 7%;
+    font-weight: bold;
+}
+
+.register_url {
+    position: absolute;
+    bottom: -2rem;
+    right: 0px;
+}
+
+.error_message {
+    color: red;
+    list-style: none;
+}
