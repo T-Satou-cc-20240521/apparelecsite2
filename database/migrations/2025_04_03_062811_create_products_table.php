@@ -15,17 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('category')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->integer('stock_quantity')->default(0);
-            $table->string('size')->nullable();
-            $table->string('color')->nullable();
-            $table->string('rank');
-            $table->string('average_rating');
-            $table->string('review_count');
-            $table->string('is_active')->default(0);
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('price');
+            $table->unsignedBigInteger('rank')->nullable();
+            $table->unsignedBigInteger('average_rating')->nullable();
+            $table->unsignedBigInteger('review_count')->nullable();
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
+        
     }
 
     /**

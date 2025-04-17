@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Category;
 
 class UserProductController extends Controller
 {
@@ -22,7 +24,7 @@ class UserProductController extends Controller
         $products = $query->get();
         $categories = Category::all();
 
-        return view('product.list', compact('products', 'categories'));
+        return view('user.product.list', compact('products', 'categories'));
     }
 }
 

@@ -1,0 +1,25 @@
+#container {
+    width: 90%;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.btns a {
+    border-radius: 3%;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    padding: 10px 25px;
+    color: #FFF;
+    transition: 0.3s ease-in-out;
+    font-weight: 600;
+    margin-bottom: 30px;
+    width: 50%;
+    text-decoration: none;
+}
+
+.btn_user_top {
+    background: rgb(0, 100, 200);
+}

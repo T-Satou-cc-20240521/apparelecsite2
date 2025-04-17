@@ -115,22 +115,6 @@
             </div>
         @endguest
     </header>
-        <h1>welcome to apparelECsite</h1>
-        <div class="banner-container">
-            <div class="banner-slider">
-                @foreach ($banners as $banner)
-                    <div class="banner-slide">
-                        <a href="{{ $banner->link }}">
-                            <img src="{{ asset($banner->image_path) }}" alt="{{ $banner->title }}" class="banner-image">
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-            <button class="next" onclick="moveSlide(1)">&#10095;</button>
-        </div>
-        <div class="product-container">
-        <a class="link_text" href="{{ route('user.product.list') }}">商品一覧</a>
-        </div>
+        <h1>商品一覧</h1>
     </body>
 </html>

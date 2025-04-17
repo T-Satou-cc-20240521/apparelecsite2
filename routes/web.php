@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\UserFavoriteController;
 use App\Http\Controllers\Admin\UserReviewController;
@@ -18,19 +19,30 @@ use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 // 管理者ルート
-Route::group(['prefix' => '/admin', 'as' => 'admin.', 'middleware' => ['auth', 'admin']], function () {
+Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/top', [AdminController::class, 'top'])->name('top');
+    Route::get('/product/index', [ProductController::class, 'index'])->name('product.index');
     Route::get('/product/list', [ProductController::class, 'list'])->name('product.list');
+    Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
     Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
     Route::post('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}', [ProductController::class, 'delete'])->name('product.delete');
-    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [AdminOrderController::class, 'detail'])->name('orders.detail');
-    Route::post('/orders/{id}/status-update', [AdminOrderController::class, 'updateStatus'])->name('orders.status.update');
-    Route::get('/orders/{id}/shipment/edit', [AdminOrderController::class, 'editShipment'])->name('orders.shipment.edit');
-    Route::post('/orders/{id}/shipment/update', [AdminOrderController::class, 'updateShipment'])->name('orders.shipment.update');
-    Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');
+    Route::get('/tag/list', [TagController::class, 'list'])->name('tag.list');
+    Route::get('/tag/create', [TagController::class, 'create'])->name('tag.create');
+    Route::post('/tag', [TagController::class, 'store'])->name('tag.store');
+    Route::get('/tag/{id}', [TagController::class, 'detail'])->name('tag.detail');
+    Route::post('/tag/{id}/update', [TagController::class, 'update'])->name('tag.update');
+    Route::delete('/tag/{id}', [TagController::class, 'delete'])->name('tag.delete');
+    Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/order/list', [OrderController::class, 'list'])->name('order.list');
+    Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
+    Route::post('/order/{id}/status-update', [OrderController::class, 'updateStatus'])->name('order.status.update');
+    Route::get('/order/{id}/shipment/edit', [OrderController::class, 'editShipment'])->name('order.shipment.edit');
+    Route::post('/order/{id}/shipment/update', [OrderController::class, 'updateShipment'])->name('order.shipment.update');
+    Route::delete('/order/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
+    Route::get('/report/index', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/user/index', [UserManagementController::class, 'index'])->name('user.index');
 });
 
 // 認証関連ルート
