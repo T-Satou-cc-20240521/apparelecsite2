@@ -18,10 +18,16 @@
                 <a class="btn_user_top" href="{{ route('admin.tag.create') }}">商品タグ登録</a>
             </div>
             <div class="btns">
+                <a class="btn_user_top" href="{{ route('admin.category.list') }}">カテゴリ一覧</a>
+            </div>
+            <div class="btns">
+                <a class="btn_user_top" href="{{ route('admin.category.create') }}">カテゴリ登録</a>
+            </div>
+            <div class="btns">
                 <a class="btn_user_top" href="{{ route('admin.report.index') }}">レポート管理</a>
             </div>  
             <div class="btns">
-                <a class="btn_user_top" href="{{ route('user.top') }}">ユーザー画面</a>
+                <a class="btn_user_top" href="{{ route('admin.top') }}">管理画面に戻る</a>
             </div>  
         </div>
     </body>

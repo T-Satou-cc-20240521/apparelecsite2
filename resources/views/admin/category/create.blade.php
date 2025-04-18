@@ -1,15 +1,15 @@
 <html>
     <head>
-        <title>商品TAG追加</title>
+        <title>カテゴリ追加</title>
         <link rel="stylesheet" href="{{ asset('/css/admin_product.css') }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     </head>
     <body>
         <div id="container">
-            <form method="post" action="{{ route('admin.tag.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('admin.category.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}      
                 <br>
-                <label class="input_label" for="name">商品タグ名</label>
+                <label class="input_label" for="name">カテゴリ名</label>
                 <br>
                 <input id="name" class="text_input_w100" type="text" name="name" required maxlength="255" value="{{ old('name')}}">
                 @error('name')
@@ -23,4 +23,4 @@
             </div>  
         </div>
     </body>
-</html>
+</html>    

@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\UserFavoriteController;
 use App\Http\Controllers\Admin\UserReviewController;
@@ -34,6 +35,10 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/tag/{id}', [TagController::class, 'detail'])->name('tag.detail');
     Route::post('/tag/{id}/update', [TagController::class, 'update'])->name('tag.update');
     Route::delete('/tag/{id}', [TagController::class, 'delete'])->name('tag.delete');
+    Route::get('/category/list', [CategoryController::class, 'list'])->name('category.list');
+    Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
+    Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
     Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');
     Route::get('/order/list', [OrderController::class, 'list'])->name('order.list');
     Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');

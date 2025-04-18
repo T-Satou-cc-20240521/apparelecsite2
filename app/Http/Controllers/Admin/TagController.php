@@ -2,14 +2,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreTagRequest;
 use App\Models\Tag;
 
 class TagController extends Controller
 {
     public function list()
     {
-        //
+        $tags = Tag::all();
+        return view('admin.tag.list',compact('tags'));
     }
 
     public function create()
@@ -17,16 +19,11 @@ class TagController extends Controller
         return view('admin.tag.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreTagRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:tags,name',
-        ]);
-
-        Tag::create([
-            'name' => $request->input('name'),
-        ]);
-    
+        $tag = new Tag;
+        $tag->name = $request->input('name');
+        $tag->save();
         return redirect()->route('admin.tag.create')->with('success', 'タグを登録しました。');
     }
 

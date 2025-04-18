@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\CheckCategoryIdRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegistProductRequest extends FormRequest
+class StoreProductRequest extends FormRequest
 {
     public function authorize()
     {
