@@ -36,7 +36,7 @@
         </div>
         <div class="right_container">
             <h2>商品バリエーション</h2>
-            <form method="POST" action="{{ route('admin.product.variants.update', $product->id) }}">
+            <form method="POST" action="{{ route('admin.products.variant.update', $product->id) }}">
                 @csrf
                 <div class="variant-list scrollable">
                     @foreach ($product->variants as $index => $variant)
@@ -57,8 +57,14 @@
                                 </label>
                             </div>
                             <div class="mt-2">
-                                <button type="submit" formaction="{{ route('admin.product.variant.delete', $variant->id) }}" class="btn btn-danger"
-                                    onclick="return confirm('このバリエーションを削除しますか？')">削除</button>
+                                {{-- 削除ボタン用の個別フォーム --}}
+                                <form method="POST"
+                                    action="{{ route('admin.products.variant.delete', ['product' => $product->id, 'variant' => $variant->id]) }}"
+                                    onsubmit="return confirm('このバリエーションを削除しますか？')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">削除</button>
+                                </form>
                             </div>
                         </div>
                     @endforeach
@@ -67,8 +73,9 @@
                     <button type="submit" class="btn btn-primary">公開設定を保存</button>
                 </div>
             </form>
+
             <h3>バリエーションを追加</h3>
-            <form method="POST" action="{{ route('admin.product.variant.store', $product->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.products.variant.store', $product->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label>色</label>

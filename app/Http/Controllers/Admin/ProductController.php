@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Models\Category;
 
+
 class ProductController extends Controller
 {
     public function index()
@@ -40,10 +41,12 @@ class ProductController extends Controller
         return view('admin.product.list',compact('products'));
     }
 
-    public function detail($productId) {
-        $product = Product::with('category')->findOrFail($productId);
+    public function detail($productId)
+    {
+        $product = Product::with(['category', 'variants'])->findOrFail($productId);
         return view('admin.product.detail', compact('product'));
     }
+
 
     public function edit($productid)
     {

@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\Products\VariantController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserManagementController;
@@ -29,6 +30,11 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
     Route::post('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}', [ProductController::class, 'delete'])->name('product.delete');
+    Route::prefix('{product}/variant')->as('products.variant.')->group(function () {
+        Route::post('/update', [VariantController::class, 'update'])->name('update');
+        Route::post('/store', [VariantController::class, 'store'])->name('store');
+        Route::delete('{variant}/delete', [VariantController::class, 'delete'])->name('delete');
+    });
     Route::get('/tag/list', [TagController::class, 'list'])->name('tag.list');
     Route::get('/tag/create', [TagController::class, 'create'])->name('tag.create');
     Route::post('/tag', [TagController::class, 'store'])->name('tag.store');
