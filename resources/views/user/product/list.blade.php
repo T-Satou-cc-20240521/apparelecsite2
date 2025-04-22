@@ -116,5 +116,27 @@
         @endguest
     </header>
         <h1>商品一覧</h1>
+        @if ($products->isEmpty())
+            <p>該当する商品は見つかりませんでした。</p>
+        @else
+            <div class="row">
+                @foreach ($products as $product)
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            @if ($product->productImages->isNotEmpty())
+                                <img src="{{ asset('storage/' . $product->productImages->first()->path) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="{{ asset('images/no-image.png') }}" class="card-img-top" alt="No image">
+                            @endif
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                                <p class="card-text">価格：¥{{ number_format($product->price) }}</p>
+                                <a href="{{ route('user.product.detail', $product->id) }}" class="btn btn-outline-primary">詳細を見る</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </body>
 </html>

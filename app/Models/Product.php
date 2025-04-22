@@ -18,10 +18,6 @@ class Product extends Model
         'description',
     ];
 
-    protected $appends = [
-        'category',
-    ];
-
     public function category() {
         return $this->belongsTo(Category::class, 'category_id');
     }
@@ -29,6 +25,16 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    public function colors()
+    {
+        return $this->belongsToMany(ProductColor::class);
+    }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(ProductSize::class);
     }
 }
 

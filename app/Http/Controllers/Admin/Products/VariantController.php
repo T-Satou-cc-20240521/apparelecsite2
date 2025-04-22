@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
 
 class VariantController extends Controller
 {
@@ -25,8 +27,8 @@ class VariantController extends Controller
     public function store(Request $request, Product $product)
     {
         $request->validate([
-            'color' => 'required|string|max:50',
-            'size' => 'required|string|max:50',
+            'color_id' => 'required|exists:product_colors,id',
+            'size_id' => 'required|exists:product_sizes,id',
             'stock_quantity' => 'required|integer|min:0',
             'image' => 'nullable|image|max:2048',
             'is_active' => 'required|boolean',
@@ -38,8 +40,8 @@ class VariantController extends Controller
         }
 
         $product->variants()->create([
-            'color' => $request->color,
-            'size' => $request->size,
+            'color_id' => $request->color_id,
+            'size_id' => $request->size_id,
             'stock_quantity' => $request->stock_quantity,
             'image_path' => $path,
             'is_active' => $request->is_active,
@@ -48,10 +50,11 @@ class VariantController extends Controller
         return redirect()->back()->with('success', 'バリエーションを追加しました');
     }
 
-    public function delete($productId, $variantId)
+    public function delete($variantId)
     {
         $variant = ProductVariant::findOrFail($variantId);
         $variant->delete();
+
         return redirect()->back()->with('success', 'バリエーションを削除しました');
     }
 }

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
+
 
 
 class ProductController extends Controller
@@ -19,7 +22,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.product.create', compact('categories'));
+        $product_colors = ProductColor::all();
+        $product_sizes = ProductSize::all();
+        return view('admin.product.create', compact('categories', 'product_colors', 'product_sizes'));
     }
 
     public function store(StoreProductRequest $request)
@@ -44,7 +49,9 @@ class ProductController extends Controller
     public function detail($productId)
     {
         $product = Product::with(['category', 'variants'])->findOrFail($productId);
-        return view('admin.product.detail', compact('product'));
+        $product_colors = ProductColor::all();
+        $product_sizes = ProductSize::all();
+        return view('admin.product.detail', compact('product', 'product_colors', 'product_sizes'));
     }
 
 
