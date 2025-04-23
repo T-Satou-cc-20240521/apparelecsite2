@@ -23,7 +23,7 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function images()
+    public function product_images()
     {
         return $this->hasMany(ProductImage::class);
     }

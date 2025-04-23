@@ -34,91 +34,74 @@
                 <a href="{{ route('admin.product.list')}}">戻る</a>
             </div>  
         </div>
-
         <div class="right_container">
             <h2>商品バリエーション</h2>
-
-            <form method="POST" action="{{ route('admin.products.variant.update', $product->id) }}">
-                @csrf
-                <div class="variant-list scrollable">
-                    @foreach ($product->variants as $index => $variant)
-                        <div class="variant-item border p-3 mb-2 rounded bg-white shadow d-flex justify-content-between align-items-start">
-                            <div>
-                                <input type="hidden" name="variants[{{ $index }}][id]" value="{{ $variant->id }}">
-                                <div><strong>色：</strong>{{ $variant->product_color ? $variant->product_color->name : '色が選ばれていません' }}</div>
-                                <div><strong>サイズ：</strong>{{ $variant->product_size ? $variant->product_size->name : 'サイズが選ばれていません' }}</div>
-                                <div><strong>在庫：</strong>{{ $variant->stock_quantity }}</div>
-                                <div class="mt-2">
-                                    <label><strong>公開設定：</strong></label><br>
-                                    <label>
-                                        <input type="radio" name="variants[{{ $index }}][is_active]" value="1"
-                                            {{ $variant->is_active ? 'checked' : '' }}> 公開
-                                    </label>
-                                    <label class="ms-2">
-                                        <input type="radio" name="variants[{{ $index }}][is_active]" value="0"
-                                            {{ !$variant->is_active ? 'checked' : '' }}> 非公開
-                                    </label>
-                                </div>
-                            </div>
-                            <div>
-                                {{-- 公開設定のフォームの外でPOSTネストせずに削除フォーム --}}
-                                <form method="POST"
-                                    action="{{ route('admin.products.variant.delete', ['product' => $product->id, 'variant' => $variant->id]) }}"
-                                    onsubmit="return confirm('このバリエーションを削除しますか？')"
-                                    style="margin-top: 10px;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">削除</button>
-                                </form>
-                            </div>
-                        </div>
-                    @endforeach
+            <div class="variant-list scrollable">
+            @foreach ($product->variants as $variant)
+                <div>
+                    <form method="POST" action="{{ route('admin.products.variant.update', $product->id) }}">
+                        @csrf
+                        <input type="hidden" name="variants[0][id]" value="{{ $variant->id }}">
+                        <div><strong>色：</strong>{{ $variant->product_color?->name ?? '未選択' }}</div>
+                        <div><strong>サイズ：</strong>{{ $variant->product_size?->name ?? '未選択' }}</div>
+                        <label>在庫数：</label>
+                        <input type="number" name="variants[0][stock_quantity]" value="{{ $variant->stock_quantity }}" min="0" required>
+                        <label>公開設定：</label>
+                        <label><input type="radio" name="variants[0][is_active]" value="1" {{ $variant->is_active ? 'checked' : '' }}> 公開</label>
+                        <label><input type="radio" name="variants[0][is_active]" value="0" {{ !$variant->is_active ? 'checked' : '' }}> 非公開</label>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </form>
                 </div>
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">公開設定を保存</button>
+                <div>
+                    <form method="POST"
+                        action="{{ route('admin.products.variant.delete', ['product' => $product->id, 'variant' => $variant->id]) }}"
+                        onsubmit="return confirm('このバリエーションを削除しますか？')"
+                        style="margin-top: 10px;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                    </form>
                 </div>
-            </form>
+            @endforeach
+            </div>
             <h3>バリエーションを追加</h3>
-            <form method="POST" action="{{ route('admin.products.variant.store', $product->id) }}" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                    <label>色</label>
-                    <select name="color_id" class="form-select" required>
-                        <option value="">選択してください</option>
-                        @foreach ($product_colors as $color)
-                            <option value="{{ $color->id }}">{{ $color->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label>サイズ</label>
-                    <select name="size_id" class="form-select" required>
-                        <option value="">選択してください</option>
-                        @foreach ($product_sizes as $size)
-                            <option value="{{ $size->id }}">{{ $size->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-
-                <div class="mb-3">
-                    <label>在庫数</label>
-                    <input type="number" name="stock_quantity" class="form-control" min="0" required>
-                </div>
-                <div class="mb-3">
-                    <label>画像</label>
-                    <input type="file" name="image" class="form-control" accept="image/*">
-                </div>
-
-                <div class="mb-3">
-                    <label>公開状態</label><br>
-                    <label><input type="radio" name="is_active" value="1" checked> 公開</label>
-                    <label class="ms-2"><input type="radio" name="is_active" value="0"> 非公開</label>
-                </div>
-
-                <button type="submit" class="btn btn-success">バリエーション追加</button>
-            </form>
+            <div>
+                <form method="POST" action="{{ route('admin.products.variant.store', $product->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label>色</label>
+                        <select name="color_id" class="form-select" required>
+                            <option value="">選択してください</option>
+                            @foreach ($product_colors as $color)
+                                <option value="{{ $color->id }}">{{ $color->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>サイズ</label>
+                        <select name="size_id" class="form-select" required>
+                            <option value="">選択してください</option>
+                            @foreach ($product_sizes as $size)
+                                <option value="{{ $size->id }}">{{ $size->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>在庫数</label>
+                        <input type="number" name="stock_quantity" class="form-control" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>画像</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label>公開状態</label><br>
+                        <label><input type="radio" name="is_active" value="1" checked> 公開</label>
+                        <label class="ms-2"><input type="radio" name="is_active" value="0"> 非公開</label>
+                    </div>
+                    <button type="submit" class="btn btn-success">バリエーション追加</button>
+                </form>
+            </div>    
         </div>
     </body>
 </html>

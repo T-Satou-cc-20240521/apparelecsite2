@@ -42,9 +42,10 @@ class ProductController extends Controller
 
     public function list()
     {
-        $products = Product::all();
-        return view('admin.product.list',compact('products'));
+        $products = Product::with(['variants.product_images'])->get();
+        return view('admin.product.list', compact('products'));
     }
+
 
     public function detail($productId)
     {

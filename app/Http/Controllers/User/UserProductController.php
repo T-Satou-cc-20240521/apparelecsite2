@@ -26,5 +26,25 @@ class UserProductController extends Controller
 
         return view('user.product.list', compact('products', 'categories'));
     }
+
+    public function detail($productId)
+    {
+        $product = Product::find($productId);
+        $colorOrder = ['ホワイト', 'ブラック', 'グレー', 'レッド', 'ブルー', 'ネイビー', 'グリーン', 'イエロー', 'ピンク', 'ベージュ', 'ブラウン', 'パープル', 'オレンジ', 'カーキ', 'ライトグレー'];
+        $colors = $product->variants
+        ->unique('color_id')
+        ->sortBy(function($variant) use ($colorOrder) {
+            return array_search($variant->product_color->name, $colorOrder);
+        });
+        $sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+        $sizes = $product->variants
+        
+        ->sortBy(function($variant) use ($sizeOrder) {
+            return array_search($variant->product_size->name, $sizeOrder);
+        });
+
+        return view('user.product.detail', compact('product', 'colors', 'sizes'));
+    }
+
 }
 

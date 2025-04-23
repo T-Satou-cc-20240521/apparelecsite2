@@ -15,13 +15,15 @@ class VariantController extends Controller
     {
         foreach ($request->input('variants', []) as $variantData) {
             $variant = ProductVariant::find($variantData['id']);
+
             if ($variant && $variant->product_id === $product->id) {
-                $variant->is_active = $variantData['is_active'];
+                $variant->is_active = $variantData['is_active'] ?? 0;
+                $variant->stock_quantity = $variantData['stock_quantity'] ?? 0;
                 $variant->save();
             }
         }
 
-        return redirect()->back()->with('success', '公開設定を更新しました');
+        return redirect()->back()->with('success', '公開設定と在庫数を更新しました');
     }
 
     public function store(Request $request, Product $product)
@@ -39,23 +41,33 @@ class VariantController extends Controller
             $path = $request->file('image')->store('variants', 'public');
         }
 
-        $product->variants()->create([
+        $variant = $product->variants()->create([
             'color_id' => $request->color_id,
             'size_id' => $request->size_id,
             'stock_quantity' => $request->stock_quantity,
-            'image_path' => $path,
             'is_active' => $request->is_active,
         ]);
+
+        if ($path) {
+            $variant->product_images()->create([
+                'image_path' => $path,
+                'priority' => 0,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'バリエーションを追加しました');
     }
 
-    public function delete($variantId)
+    public function delete(Product $product, ProductVariant $variant)
     {
-        $variant = ProductVariant::findOrFail($variantId);
+        foreach ($variant->product_images as $image) {
+            \Storage::disk('public')->delete($image->image_path);
+        }
+
         $variant->delete();
 
         return redirect()->back()->with('success', 'バリエーションを削除しました');
     }
 }
+
 
