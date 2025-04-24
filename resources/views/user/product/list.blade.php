@@ -8,24 +8,28 @@
     <body>
     <header class="top_area">
         @auth
-            @if(Auth::user()->role === 1)
+            @if(Auth::user()->is_admin === true)
                 <div class="header_list">
                     <div class="start_section">
                         <a href="{{ route('user.top') }}">apparelECsite</a>
                     </div>
                     <div class="center_section">
-                        <form action="{{ route('user.product.list') }}" method="GET">
+                        <form id="searchForm" action="{{ route('user.product.list') }}" method="GET">
                             <select name="category" id="category" class="category_box">
-                                <option value="" selected>すべて</option>
+                                <option value="" {{ request('category') == '' ? 'selected' : '' }}>すべて</option>
                                 @if($categories->isEmpty())
                                     <option disabled>カテゴリがありません</option>
                                 @else
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
-                            <input type="text" name="query" class="search_box" placeholder="検索キーワードを入力" required>
+                            <input type="text" id="queryInput" name="query" class="search_box"
+                                placeholder="検索キーワードを入力"
+                                value="{{ request('query') }}">
                             <button type="submit" class="query_button">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -50,18 +54,22 @@
                         <a href="{{ route('user.top') }}">apparelECsite</a>
                     </div>
                     <div class="center_section">
-                        <form action="{{ route('user.product.list') }}" method="GET">
+                        <form id="searchForm" action="{{ route('user.product.list') }}" method="GET">
                             <select name="category" id="category" class="category_box">
-                                <option value="" selected>すべて</option>
+                                <option value="" {{ request('category') == '' ? 'selected' : '' }}>すべて</option>
                                 @if($categories->isEmpty())
                                     <option disabled>カテゴリがありません</option>
                                 @else
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
-                            <input type="text" name="query" class="search_box" placeholder="検索キーワードを入力" required>
+                            <input type="text" id="queryInput" name="query" class="search_box"
+                                placeholder="検索キーワードを入力"
+                                value="{{ request('query') }}">
                             <button type="submit" class="query_button">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -88,18 +96,22 @@
                     <a href="{{ route('user.top') }}">apparelECsite</a>
                 </div>
                 <div class="center_section">
-                    <form action="{{ route('user.product.list') }}" method="GET">
+                    <form id="searchForm" action="{{ route('user.product.list') }}" method="GET">
                         <select name="category" id="category" class="category_box">
-                            <option value="" selected>すべて</option>
+                            <option value="" {{ request('category') == '' ? 'selected' : '' }}>すべて</option>
                             @if($categories->isEmpty())
                                 <option disabled>カテゴリがありません</option>
                             @else
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
                                 @endforeach
                             @endif
                         </select>
-                        <input type="text" name="query" class="search_box" placeholder="検索キーワードを入力" required>
+                        <input type="text" id="queryInput" name="query" class="search_box"
+                            placeholder="検索キーワードを入力"
+                            value="{{ request('query') }}">
                         <button type="submit" class="query_button">
                             <i class="fas fa-search"></i>
                         </button>
@@ -115,24 +127,31 @@
             </div>
         @endguest
     </header>
+    @php
+        $filteredProducts = $products->filter(function($product) {
+            return $product->variants->where('is_active', 1)->where('stock_quantity', '>', 0)->isNotEmpty();
+        });
+    @endphp
     <h1>商品一覧</h1>
-@if ($products->isEmpty())
-    <p>該当する商品は見つかりませんでした。</p>
-@else
-    <div class="row">
-        @foreach ($products as $product)
-            @php
-                $variant = $product->variants->where('is_active', 1)->where('stock_quantity', '>', 0)->first();
-            @endphp
-
-            <div class="product-card">
-                <img src="{{ asset('storage/' . $variant->product_images->first()->image_path) }}" alt="商品画像" class="img-thumbnail">
-                <h3>{{ $product->name }}</h3>
-                <p class="card-text">価格：¥{{ number_format($product->price) }}</p>
-                <a href="{{ route('user.product.detail', $product->id) }}" class="btn btn-outline-primary">詳細を見る</a>
-            </div>
-        @endforeach
-    </div>
-@endif
+    @if ($filteredProducts->isEmpty())
+        <p>該当する商品は見つかりませんでした。</p>
+        <a class="btn_user_top" href="{{ route('user.top') }}">TOPに戻る</a>
+    @else
+        <div class="row">
+            @foreach ($filteredProducts as $product)
+                @php
+                    $variant = $product->variants->where('stock_quantity', '>', 0)->first();
+                @endphp
+                <div class="product-card">
+                    <img src="{{ asset('storage/' . $variant->product_images->first()->image_path) }}" alt="商品画像" class="img-thumbnail">
+                    <h3>{{ $product->name }}</h3>
+                    <p class="card-text">価格：¥{{ number_format($product->price) }}</p>
+                    <a href="{{ route('user.product.detail', $product->id) }}" class="btn btn-outline-primary">詳細を見る</a>
+                    <a class="btn_user_top" href="{{ route('user.top') }}">TOPに戻る</a>
+                </div>
+            @endforeach
+        </div>
+    @endif
+    <script src="{{ asset('/js/header.js') }}"></script>
     </body>
 </html>

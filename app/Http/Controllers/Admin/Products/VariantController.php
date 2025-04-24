@@ -32,19 +32,20 @@ class VariantController extends Controller
             'color_id' => 'required|exists:product_colors,id',
             'size_id' => 'required|exists:product_sizes,id',
             'stock_quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|max:2048',
+            'image_path' => 'required|image|max:2048',
             'is_active' => 'required|boolean',
         ]);
 
         $path = null;
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('variants', 'public');
+        if ($request->hasFile('image_path')) {
+            $path = $request->file('image_path')->store('variants', 'public');
         }
 
         $variant = $product->variants()->create([
             'color_id' => $request->color_id,
             'size_id' => $request->size_id,
             'stock_quantity' => $request->stock_quantity,
+            'image_path' => $path,
             'is_active' => $request->is_active,
         ]);
 

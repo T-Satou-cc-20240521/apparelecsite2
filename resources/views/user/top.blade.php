@@ -8,28 +8,32 @@
     <body>
     <header class="top_area">
         @auth
-            @if(Auth::user()->role === 1)
+            @if(Auth::user()->is_admin === true)
                 <div class="header_list">
                     <div class="start_section">
                         <a href="{{ route('user.top') }}">apparelECsite</a>
                     </div>
                     <div class="center_section">
-                        <form action="{{ route('user.product.list') }}" method="GET">
-                            <select name="category" id="category" class="category_box">
-                                <option value="" selected>すべて</option>
-                                @if($categories->isEmpty())
-                                    <option disabled>カテゴリがありません</option>
-                                @else
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <input type="text" name="query" class="search_box" placeholder="検索キーワードを入力" required>
-                            <button type="submit" class="query_button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
+                    <form id="searchForm" action="{{ route('user.product.list') }}" method="GET">
+                        <select name="category" id="category" class="category_box">
+                            <option value="" {{ request('category') == '' ? 'selected' : '' }}>すべて</option>
+                            @if($categories->isEmpty())
+                                <option disabled>カテゴリがありません</option>
+                            @else
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <input type="text" id="queryInput" name="query" class="search_box"
+                            placeholder="検索キーワードを入力"
+                            value="{{ request('query') }}">
+                        <button type="submit" class="query_button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                     </div>
                     <div class="end_section">
                         <ul class="header_ul">
@@ -50,18 +54,22 @@
                         <a href="{{ route('user.top') }}">apparelECsite</a>
                     </div>
                     <div class="center_section">
-                        <form action="{{ route('user.product.list') }}" method="GET">
+                        <form id="searchForm" action="{{ route('user.product.list') }}" method="GET">
                             <select name="category" id="category" class="category_box">
-                                <option value="" selected>すべて</option>
+                                <option value="" {{ request('category') == '' ? 'selected' : '' }}>すべて</option>
                                 @if($categories->isEmpty())
                                     <option disabled>カテゴリがありません</option>
                                 @else
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
-                            <input type="text" name="query" class="search_box" placeholder="検索キーワードを入力" required>
+                            <input type="text" id="queryInput" name="query" class="search_box"
+                                placeholder="検索キーワードを入力"
+                                value="{{ request('query') }}">
                             <button type="submit" class="query_button">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -88,18 +96,22 @@
                     <a href="{{ route('user.top') }}">apparelECsite</a>
                 </div>
                 <div class="center_section">
-                    <form action="{{ route('user.product.list') }}" method="GET">
+                    <form id="searchForm" action="{{ route('user.product.list') }}" method="GET">
                         <select name="category" id="category" class="category_box">
-                            <option value="" selected>すべて</option>
+                            <option value="" {{ request('category') == '' ? 'selected' : '' }}>すべて</option>
                             @if($categories->isEmpty())
                                 <option disabled>カテゴリがありません</option>
                             @else
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
                                 @endforeach
                             @endif
                         </select>
-                        <input type="text" name="query" class="search_box" placeholder="検索キーワードを入力" required>
+                        <input type="text" id="queryInput" name="query" class="search_box"
+                            placeholder="検索キーワードを入力"
+                            value="{{ request('query') }}">
                         <button type="submit" class="query_button">
                             <i class="fas fa-search"></i>
                         </button>
@@ -130,7 +142,8 @@
             <button class="next" onclick="moveSlide(1)">&#10095;</button>
         </div>
         <div class="product-container">
-        <a class="link_text" href="{{ route('user.product.list') }}">商品一覧</a>
+            <a class="link_text" href="{{ route('user.product.list') }}">商品一覧</a>
         </div>
+    <script src="{{ asset('/js/header.js') }}"></script>
     </body>
 </html>

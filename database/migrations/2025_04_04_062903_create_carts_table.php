@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
             $table->integer('quantity');
             $table->timestamps();
-            $table->unique(['user_id', 'product_id']);
+            $table->unique(['user_id', 'variant_id']);
         });
     }
 

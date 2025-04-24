@@ -20,6 +20,12 @@
                     <li class="error_message">{{ $message }}</li>
                 @enderror
                 <br>
+                <label class="input_label" for="description">商品説明</label>
+                <input id="description" class="text_input_w100" type="text" name="description" required maxlength="255" value="{{ old('description', $product->description) }}">
+                @error('description')
+                    <li class="error_message">{{ $message }}</li>
+                @enderror
+                <br>
                 <label class="input_label" for="category_id">カテゴリ</label>
                 <br>
                 <span>{{ $product->category->name }}</span>
@@ -28,6 +34,9 @@
                     <li class="error_message">{{ $message }}</li>
                 @enderror
                 <br>
+                <label>公開設定：</label>
+                <label><input type="radio" name="is_active" value="1" {{ $product->is_active ? 'checked' : '' }}> 公開</label>
+                <label><input type="radio" name="is_active" value="0" {{ !$product->is_active ? 'checked' : '' }}> 非公開</label>
                 <input class="submit_btn" type="submit" value="更新">
             </form>
             <div class="back_btn">
@@ -92,7 +101,7 @@
                     </div>
                     <div class="mb-3">
                         <label>画像</label>
-                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <input type="file" name="image_path" class="form-control" accept="image/*" required>
                     </div>
                     <div class="mb-3">
                         <label>公開状態</label><br>

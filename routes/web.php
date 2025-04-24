@@ -73,6 +73,7 @@ Route::group(['prefix' => '/user', 'as' => 'user.'], function () {
     Route::get('/top', [UserController::class, 'top'])->name('top');
     Route::get('/product/list', [UserProductController::class, 'list'])->name('product.list');
     Route::get('/product/{id}', [UserProductController::class, 'detail'])->name('product.detail');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart/list', [CartController::class, 'list'])->name('cart.list');
     Route::get('/cart/{id}', [CartController::class, 'detail'])->name('cart.detail');
 });

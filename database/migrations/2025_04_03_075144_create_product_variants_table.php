@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('color_id')->nullable()->constrained('product_colors')->onDelete('set null');
             $table->foreignId('size_id')->nullable()->constrained('product_sizes')->onDelete('set null');
             $table->unsignedBigInteger('stock_quantity')->default(0);
-            $table->string('image_path')->nullable();
+            $table->string('image_path');
             $table->boolean('is_active')->default(0);
             $table->timestamps();
         });

@@ -61,9 +61,15 @@ class ProductController extends Controller
         
     }
 
-    public function update(Request $request,$productid)
+    public function update(Request $request, $productId)
     {
-        //
+        $product = Product::find($productId);
+        $product->name = $request->input('name');
+        $product->price = $request->input('price');
+        $product->description = $request->input('description');
+        $product->is_active = $request->input('is_active');
+        $product->save();
+        return redirect()->route('admin.product.detail', ['id' => $product->id]);
     }
 
     public function delete($productId)
