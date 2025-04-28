@@ -127,53 +127,32 @@
             </div>
         @endguest
     </header>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="product-image">
-                        <img src="{{ asset('storage/' . $product->variants->first()->product_images->first()->image_path) }}" alt="商品画像" class="img-fluid" id="product-image-display">
-                    </div>
+    <h1>カート商品一覧</h1>
+    @if ($carts->isEmpty())
+        <p>カートに商品がありません。</p>
+        <a class="btn_user_top" href="{{ route('user.top') }}">TOPに戻る</a>
+    @else
+        <div class="row">
+            @foreach ($carts as $cart)
+                @php
+                    $variant = $cart->variant;
+                @endphp
+                <div class="product-card">
+                    <img src="{{ asset('storage/' . $variant->product_images->first()->image_path) }}" alt="商品画像" class="img-thumbnail">
+                    <h3>{{ $cart->product->name }}</h3>
+                    <p class="card-text">価格：¥{{ number_format($cart->product->price) }}</p>
+                    <p>数量：{{ $cart->quantity }}</p>
+                    <a href="{{ route('user.product.detail', $cart->product->id) }}" class="btn btn-outline-primary">詳細を見る</a>
+                    <form action="{{ route('user.cart.remove', $cart->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">カートから削除</button>
+                    </form>
                 </div>
-                <form action="{{ route('user.cart.add') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="variant_id" id="variant_id">
-                    <div class="col-md-6">
-                        <h1>{{ $product->name }}</h1>
-                        <p>{{ number_format($product->price) }} 円</p>
-                        <h4>この商品について</h4>
-                        <p>{{ $product->description }}</p>
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <div class="mb-3">
-                            <h4>COLOR</h4>
-                            @foreach($colors as $index => $colorVariant)
-                                <input type="radio" name="color_id" value="{{ $colorVariant->color_id }}" id="color_{{ $colorVariant->color_id }}" {{ $index === 0 ? 'checked' : '' }}>
-                                <label for="color_{{ $colorVariant->color_id }}">
-                                    {{ $colorVariant->product_color->name }}
-                                </label>
-                            @endforeach
-                        </div>
-                        <div class="mb-3" id="size-container">
-                            <h4>SIZE</h4>
-
-                        </div>
-                        <h4 id="stock_quantity" style="display: none;"></h4>
-                        <div class="mb-3">
-                            <h4>数量</h4>
-                            <select id="quantity" name="quantity" class="form-control" style="width: 100px;">
-
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="add-to-cart" disabled>カートに入れる</button>
-                    </div>
-                </form>
-                <a class="btn_user_top" href="{{ route('user.product.list') }}">商品一覧に戻る</a>
-            </div>
+            @endforeach
         </div>
-    <script>
-        const variants = @json($product->variants);
-    </script>
-    <script src="{{ asset('/js/product_detail.js') }}"></script>
-    <script src="{{ asset('/js/header.js') }}"></script>
+    @endif
+<script src="{{ asset('/js/header.js') }}"></script>
+
     </body>
 </html>

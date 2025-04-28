@@ -4,62 +4,60 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function add(Request $request)
     {
-        //
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'variant_id' => 'required|exists:product_variants,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $userId = Auth::id();
+        $product = Product::find($request->product_id);
+        $variant = ProductVariant::find($request->variant_id);
+
+        if (!$product || !$product->is_active || $variant->stock_quantity <= 0) {
+            return redirect()->route('user.cart.list')->with('error', 'この商品は購入できません。');
+        }
+
+        $cart = Cart::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'variant_id' => $request->variant_id,
+            ],
+            [
+                'product_id' => $request->product_id,
+                'quantity' => \DB::raw('quantity + ' . $request->quantity),
+            ]
+        );
+        return redirect()->route('user.cart.list')->with('success', 'カートに追加しました！');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function list()
     {
-        //
+        $carts = Cart::where('user_id', Auth::id())
+            ->with(['product', 'variant'])
+            ->get()
+            ->filter(function ($cart) {
+                return $cart->product && $cart->product->is_active && $cart->variant && $cart->variant->stock_quantity > 0;
+            });
+        return view('user.cart.list', compact('carts'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function remove($id)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $cart = Cart::findOrFail($id);
+        if ($cart->user_id !== Auth::id()) {
+            return redirect()->route('user.cart.list')->with('error', 'この操作は許可されていません。');
+        }
+        $cart->delete();
+        return redirect()->route('user.cart.list')->with('success', 'カートから削除しました。');
     }
 }
