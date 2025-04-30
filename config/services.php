@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'payjp' => [
+    'public' => env('PAYJP_PUBLIC_KEY'),
+    'secret' => env('PAYJP_SECRET_KEY'),
+    ],
 ];

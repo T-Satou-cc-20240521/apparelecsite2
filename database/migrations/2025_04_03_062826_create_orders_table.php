@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('coupon_id')->nullable()->constrained()->onDelete('set null');
             $table->unsignedBigInteger('total_price');
             $table->unsignedBigInteger('discount_amount')->default(0);
-            $table->unsignedBigInteger('status')->default(0);
+            $table->enum('status', ['pending', 'paid', 'shipped', 'cancelled'])->default('pending');
             $table->string('payment_method');
             $table->string('shipping_address');
             $table->timestamps();

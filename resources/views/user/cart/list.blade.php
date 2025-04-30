@@ -143,13 +143,16 @@
                     <p class="card-text">価格：¥{{ number_format($cart->product->price) }}</p>
                     <p>数量：{{ $cart->quantity }}</p>
                     <a href="{{ route('user.product.detail', $cart->product->id) }}" class="btn btn-outline-primary">詳細を見る</a>
-                    <form action="{{ route('user.cart.remove', $cart->id) }}" method="POST">
+                    <form action="{{ route('user.cart.delete', $cart->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">カートから削除</button>
                     </form>
                 </div>
             @endforeach
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="{{ route('user.order.form') }}" class="btn btn-primary btn-lg">購入へ進む</a>
         </div>
     @endif
 <script src="{{ asset('/js/header.js') }}"></script>

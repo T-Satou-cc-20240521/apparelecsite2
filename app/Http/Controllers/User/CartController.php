@@ -51,7 +51,7 @@ class CartController extends Controller
         return view('user.cart.list', compact('carts'));
     }
 
-    public function remove($id)
+    public function delete($id)
     {
         $cart = Cart::findOrFail($id);
         if ($cart->user_id !== Auth::id()) {

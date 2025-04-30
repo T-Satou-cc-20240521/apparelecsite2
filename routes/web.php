@@ -75,7 +75,7 @@ Route::group(['prefix' => '/user', 'as' => 'user.'], function () {
     Route::get('/product/{id}', [UserProductController::class, 'detail'])->name('product.detail');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart/list', [CartController::class, 'list'])->name('cart.list');
-    Route::get('/cart/{id}', [CartController::class, 'detail'])->name('cart.detail');
+    Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
 });
 
 // 一般ユーザー（ログイン時のみ可）
@@ -86,10 +86,9 @@ Route::group(['prefix' => '/user', 'as' => 'user.', 'middleware' => 'auth'], fun
     Route::get('/mypage/edit', [MyPageController::class, 'edit'])->name('mypage.edit');
     Route::post('/mypage/confirm', [MyPageController::class, 'confirm'])->name('mypage.confirm');
     Route::post('/mypage/update', [MyPageController::class, 'update'])->name('mypage.update');
-    Route::get('/', [UserOrderController::class, 'list'])->name('user_order.list');
-    Route::get('/{id}', [UserOrderController::class, 'detail'])->name('user_order.detail');
-    Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
-    Route::post('/cart/complete', [CartController::class, 'complete'])->name('cart.complete');
+    Route::get('/order/form', [UserOrderController::class, 'form'])->name('order.form');
+    Route::post('/order/confirm', [UserOrderController::class, 'confirm'])->name('order.confirm');
+    Route::post('/order/complete', [UserOrderController::class, 'complete'])->name('order.complete');
     Route::get('/auth/{provider}/redirect', [SocialLoginController::class, 'redirectToProvider'])->name('auth.redirect');
     Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('auth.callback');
 });
