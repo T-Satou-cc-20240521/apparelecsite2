@@ -4,7 +4,7 @@
         <title>apparelECsite</title>
     </head>
     <body>
-        <h2>ご購入ありがとうございました！</h2>
+        <h2>ご注文ありがとうございました</h2>
         <p>注文番号: {{ $order->id }}</p>
         <p>配送先: {{ $order->shipping_address }}</p>
         <p>支払い方法: {{ $order->payment_method }}</p>
