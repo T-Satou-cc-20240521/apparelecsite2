@@ -11,7 +11,7 @@ use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class OrderController extends Controller
+class UserOrderController extends Controller
 {
     public function form()
     {
@@ -136,7 +136,7 @@ class OrderController extends Controller
             ]);
 
             foreach ($cartItems as $item) {
-                Order_Item::create([
+                OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->variant->product_id,
                     'variant_id' => $item->variant_id,

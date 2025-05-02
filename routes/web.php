@@ -17,8 +17,8 @@ use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\MyPageController;
-use App\Http\Controllers\User\OrderController as UserOrderController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\User\UserOrderController;
+use App\Http\Controllers\Admin\AdminOrderController;
 
 // 管理者ルート
 Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
@@ -45,13 +45,13 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
     Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
     Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
-    Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');
-    Route::get('/order/list', [OrderController::class, 'list'])->name('order.list');
-    Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
-    Route::post('/order/{id}/status-update', [OrderController::class, 'updateStatus'])->name('order.status.update');
-    Route::get('/order/{id}/shipment/edit', [OrderController::class, 'editShipment'])->name('order.shipment.edit');
-    Route::post('/order/{id}/shipment/update', [OrderController::class, 'updateShipment'])->name('order.shipment.update');
-    Route::delete('/order/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
+    Route::get('/order/index', [AdminOrderController::class, 'index'])->name('order.index');
+    Route::get('/order/list', [AdminOrderController::class, 'list'])->name('order.list');
+    Route::get('/order/{id}', [AdminOrderController::class, 'detail'])->name('order.detail');
+    Route::post('/order/{id}/status-update', [AdminOrderController::class, 'updateStatus'])->name('order.status.update');
+    Route::get('/order/{id}/shipment/edit', [AdminOrderController::class, 'editShipment'])->name('order.shipment.edit');
+    Route::post('/order/{id}/shipment/update', [AdminOrderController::class, 'updateShipment'])->name('order.shipment.update');
+    Route::delete('/order/{id}', [AdminOrderController::class, 'destroy'])->name('order.destroy');
     Route::get('/report/index', [ReportController::class, 'index'])->name('report.index');
     Route::get('/user/index', [UserManagementController::class, 'index'])->name('user.index');
 });
