@@ -46,8 +46,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
     Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
     Route::get('/order/index', [AdminOrderController::class, 'index'])->name('order.index');
-    Route::get('/order/list', [AdminOrderController::class, 'list'])->name('order.list');
-    Route::get('/order/{id}', [AdminOrderController::class, 'detail'])->name('order.detail');
+    Route::get('/order/{id}', [AdminOrderController::class, 'show'])->name('order.show');
     Route::post('/order/{id}/status-update', [AdminOrderController::class, 'updateStatus'])->name('order.status.update');
     Route::get('/order/{id}/shipment/edit', [AdminOrderController::class, 'editShipment'])->name('order.shipment.edit');
     Route::post('/order/{id}/shipment/update', [AdminOrderController::class, 'updateShipment'])->name('order.shipment.update');
@@ -88,6 +87,7 @@ Route::group(['prefix' => '/user', 'as' => 'user.', 'middleware' => 'auth'], fun
     Route::post('/mypage/update', [MyPageController::class, 'update'])->name('mypage.update');
     Route::get('/order/form', [UserOrderController::class, 'form'])->name('order.form');
     Route::post('/order/confirm', [UserOrderController::class, 'confirm'])->name('order.confirm');
+    Route::get('/order/confirm', [UserOrderController::class, 'showConfirm'])->name('order.confirm.view');
     Route::post('/order/complete', [UserOrderController::class, 'complete'])->name('order.complete');
     Route::get('/auth/{provider}/redirect', [SocialLoginController::class, 'redirectToProvider'])->name('auth.redirect');
     Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('auth.callback');

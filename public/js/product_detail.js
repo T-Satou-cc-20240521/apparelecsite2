@@ -29,19 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (colorId && sizeId) {
             const variant = variants.find(v => v.color_id == colorId && v.size_id == sizeId);
             if (variant) {
-                // 在庫表示
+
                 stockQuantity.textContent = variant.stock_quantity > 0 ? `在庫あり（残り ${variant.stock_quantity} 点）` : 'SOLD OUT';
                 stockQuantity.style.display = 'block';
-                // カートボタンの有効・無効切り替え
+
                 addToCartBtn.disabled = variant.stock_quantity <= 0;
-                // variant_id hiddenにセット
+
                 if (variantIdInput) {
                     variantIdInput.value = variant.id;
                 }
-                // 数量プルダウン生成
+
                 const quantitySelect = document.getElementById('quantity');
                 if (quantitySelect) {
-                    quantitySelect.innerHTML = ''; // 一度クリア
+                    quantitySelect.innerHTML = '';
                     for (let i = 1; i <= Math.min(variant.stock_quantity, 10); i++) {
                         const option = document.createElement('option');
                         option.value = i;
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         quantitySelect.appendChild(option);
                     }
                 }
-                // （任意）画像切り替え
+
                 const productImageDisplay = document.getElementById('product-image-display');
                 if (productImageDisplay && variant.product_images?.length > 0) {
                     productImageDisplay.src = `/storage/${variant.product_images[0].image_path}`;
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStock();
         }
     });
-    // 最初のカラーに応じた初期サイズ・在庫反映
+
     const defaultColorId = document.querySelector('input[name="color_id"]:checked')?.value;
     if (defaultColorId) {
         renderSizes(defaultColorId);

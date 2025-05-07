@@ -4,6 +4,11 @@
         <title>apparelECsite</title>
     </head>
     <body>
+        @if (session('error'))
+            <div>
+                {{ session('error') }}
+            </div>
+        @endif
         <h2>注文内容確認</h2>
         <p>配送先住所: {{ $shippingAddress }}</p>
         <p>支払い方法: {{ $paymentMethodLabel }}</p>

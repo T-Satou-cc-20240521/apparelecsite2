@@ -23,22 +23,16 @@ class Order extends Model
         'status' => OrderStatus::class,
     ];
 
-    /**
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     */
     public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);
     }
 
-    /**
-     */
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
