@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use App\Enums\OrderStatus;
 
 class Order extends Model
@@ -17,6 +18,7 @@ class Order extends Model
         'status',
         'payment_method',
         'shipping_address',
+        'order_number',
     ];
 
     protected $casts = [
@@ -36,6 +38,26 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            if (empty($order->order_number)) {
+                $order->order_number = self::generateUniqueOrderNumber();
+            }
+        });
+    }
+
+    protected static function generateUniqueOrderNumber(): string
+    {
+        do {
+            $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
+        } while (self::where('order_number', $orderNumber)->exists());
+
+        return $orderNumber;
     }
 }
 

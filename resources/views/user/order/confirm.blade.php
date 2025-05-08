@@ -31,7 +31,7 @@
         </ul>
 
         <p>合計: ¥{{ number_format($total - $discount) }}</p>
-
+        
         <form method="POST" action="{{ route('user.order.complete') }}">
             @csrf
             <button type="submit">購入を確定する</button>
