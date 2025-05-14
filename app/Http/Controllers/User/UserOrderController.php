@@ -22,7 +22,11 @@ class UserOrderController extends Controller
             return redirect()->route('user.cart.list')->with('error', 'カートが空です。');
         }
 
-        return view('user.order.form', compact('user', 'cartItems'));
+        return view('user.order.form', [
+        'user' => $user,
+        'cartItems' => $cartItems,
+        'payjp_public_key' => config('payjp.public_key'),
+    ]);
     }
 
     public function confirm(Request $request)
