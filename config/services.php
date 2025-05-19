@@ -39,4 +39,10 @@ return [
     'public' => env('PAYJP_PUBLIC_KEY'),
     'secret' => env('PAYJP_SECRET_KEY'),
     ],
+
+    'google' => [
+    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
 ];

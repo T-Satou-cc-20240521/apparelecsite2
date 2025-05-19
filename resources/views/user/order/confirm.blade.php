@@ -42,7 +42,7 @@
         @csrf
         {{-- Hidden inputs to pass values to the complete handler --}}
         <input type="hidden" name="shipping_address" value="{{ $shippingAddress }}">
-        <input type="hidden" name="payment_method" value="{{ $paymentMethod }}">
+        <input type="hidden" name="payment_method" value="{{ $paymentMethodLabel }}">
         <input type="hidden" name="card_token" value="{{ $cardToken ?? '' }}">
         <input type="hidden" name="emoney_token" value="{{ $emoneyToken ?? '' }}">
         <input type="hidden" name="coupon_code" value="{{ $coupon->code ?? '' }}">

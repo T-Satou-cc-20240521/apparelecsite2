@@ -19,7 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'phone_number',
-        'password_hash',
+        'password',
         'address',
         'email_verified_at',
         'is_active',
@@ -37,18 +37,29 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password_hash'] = bcrypt($value);
-    }
-
     public function getAuthPassword()
     {
-        return $this->password_hash;
+        return $this->password;
     }
 
     public function getRememberTokenName()
     {
         return 'remember_token';
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function hasFavorited($productId)
+    {
+        return $this->favorites()->where('product_id', $productId)->exists();
+    }
+
+    public function socialAccounts()
+    {
+        return $this->hasMany(SocialAccount::class);
+    }
+
 }

@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\DB;
 
 class UserOrderController extends Controller
 {
+    public function list()
+    {
+        $orders = Auth::user()->orders()->with('orderItems.product')->get();
+        return view('user.order.list', compact('orders'));
+    }
+
     public function form()
     {
         $user = Auth::user();

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'name' => '管理者太郎',
             'email' => 'admin000@sample.com',
             'phone_number' => '08012345678',
-            'password_hash' => Hash::make('admin000'),
+            'password' => Hash::make('admin000'),
             'address' => '東京都新宿区1-1-1',
             'email_verified_at' => now(),
             'is_admin' => true,

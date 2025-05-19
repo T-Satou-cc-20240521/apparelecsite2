@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="{{ asset('css/top.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>apparelECsite</title>
     </head>
     <body>
@@ -146,6 +147,17 @@
                     <img src="{{ asset('storage/' . $variant->product_images->first()->image_path) }}" alt="商品画像" class="img-thumbnail">
                     <h3>{{ $product->name }}</h3>
                     <p class="card-text">価格：¥{{ number_format($product->price) }}</p>
+                    @auth
+                        <button 
+                            class="favorite-btn" 
+                            data-product-id="{{ $product->id }}">
+                            @if(auth()->check() && auth()->user()->hasFavorited($product->id))
+                                ❤️
+                            @else
+                                🤍
+                            @endif
+                        </button>
+                    @endauth
                     <a href="{{ route('user.product.detail', $product->id) }}" class="btn btn-outline-primary">詳細を見る</a>
                     <a class="btn_user_top" href="{{ route('user.top') }}">TOPに戻る</a>
                 </div>
@@ -153,5 +165,6 @@
         </div>
     @endif
     <script src="{{ asset('/js/header.js') }}"></script>
+    <script src="{{ asset('/js/favorite.js') }}"></script>
     </body>
 </html>

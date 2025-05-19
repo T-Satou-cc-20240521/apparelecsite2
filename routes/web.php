@@ -65,6 +65,7 @@ Route::group(['prefix' => '/auth', 'as' => 'auth.'], function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/{provider}/redirect', [SocialLoginController::class, 'redirectToProvider'])->name('social.redirect');
     Route::get('/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('social.callback');
+    Route::post('/{provider}/detach', [SocialLoginController::class, 'detach'])->name('social.detach');
 });
 
 // 一般ユーザー（非ログイン時アクセス可）
@@ -80,11 +81,12 @@ Route::group(['prefix' => '/user', 'as' => 'user.'], function () {
 // 一般ユーザー（ログイン時のみ可）
 Route::group(['prefix' => '/user', 'as' => 'user.', 'middleware' => 'auth'], function () {
     Route::post('/favorite/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
-    Route::get('/favorites', [FavoriteController::class, 'list'])->name('favorites.list');
+    Route::get('/favorite/list', [FavoriteController::class, 'list'])->name('favorite.list');
     Route::get('/mypage/list', [MyPageController::class, 'list'])->name('mypage.list');
     Route::get('/mypage/edit', [MyPageController::class, 'edit'])->name('mypage.edit');
     Route::post('/mypage/confirm', [MyPageController::class, 'confirm'])->name('mypage.confirm');
     Route::post('/mypage/update', [MyPageController::class, 'update'])->name('mypage.update');
+    Route::get('/order/list', [UserOrderController::class, 'list'])->name('order.list');
     Route::get('/order/form', [UserOrderController::class, 'form'])->name('order.form');
     Route::post('/order/confirm', [UserOrderController::class, 'confirm'])->name('order.confirm');
     Route::get('/order/confirm', [UserOrderController::class, 'showConfirm'])->name('order.confirm.view');
